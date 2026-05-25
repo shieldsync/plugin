@@ -1,6 +1,6 @@
-# 🛡️ ShieldSync — WordPress Security Firewall & IPS
+# ShieldSync — WordPress Security Firewall & IPS
 
-> Real-time WordPress protection against modern cyber threats. Blocks attacks before WordPress fully loads.
+> A pre-WordPress Web Application Firewall and Intrusion Prevention System that protects sites before the CMS loads.
 
 [![WordPress Compatible](https://img.shields.io/badge/WordPress-6.0%2B-blue?logo=wordpress)](https://wordpress.org)
 [![PHP Version](https://img.shields.io/badge/PHP-8.1%2B-purple?logo=php)](https://php.net)
@@ -9,48 +9,48 @@
 
 ---
 
-## What is ShieldSync?
+## Overview
 
-ShieldSync is an intelligent **Web Application Firewall (WAF)** and **Intrusion Prevention System (IPS)** for WordPress. Unlike traditional security plugins that react after an attack, ShieldSync operates at the `mu-plugin` level — intercepting and scoring every HTTP request before WordPress even loads your theme or plugins.
-
-The **Pro tier** connects your site to the ShieldSync cloud threat intelligence network, sharing and receiving real-time IP reputation data, attack signatures, and threat feeds across all protected sites.
+ShieldSync is a WordPress security plugin built to intercept and score HTTP requests before WordPress initializes. The core module delivers open source WAF protections, while the Pro option adds cloud threat intelligence, reputation sharing, and analytics.
 
 ---
 
 ## Features
 
-### 🔒 Core WAF (Free — Open Source)
+### Core WAF (Free)
 
 | Protection | Description |
 |---|---|
-| **SQL Injection** | Detects and blocks SQLi patterns in GET, POST, cookies, and headers |
-| **XSS** | Filters cross-site scripting attempts across all input vectors |
-| **Brute Force** | Rate-limits login attempts with IP-based lockout |
-| **File Upload Exploits** | MIME validation, EXIF stripping, extension filtering |
-| **CSRF Protection** | Nonce-based request verification |
-| **Bot Detection** | UA fingerprinting, reverse DNS validation, behavioral scoring |
-| **XML-RPC Abuse** | Block or restrict XML-RPC access |
-| **Rate Limiting** | Per-IP request throttling with configurable thresholds |
+| SQL Injection | Detects and blocks SQLi patterns in GET, POST, cookies, and headers |
+| Cross-Site Scripting (XSS) | Filters XSS attempts across all input vectors |
+| Brute Force Protection | Rate-limits login attempts and locks out abusive IPs |
+| File Upload Protection | Validates MIME types, strips EXIF data, and filters extensions |
+| CSRF Protection | Verifies request nonces for protected actions |
+| Bot Detection | Uses UA fingerprinting, reverse DNS checks, and behavioral scoring |
+| XML-RPC Protection | Blocks or restricts XML-RPC access |
+| Rate Limiting | Configurable per-IP request throttling |
 
-### ☁️ Pro Features (Cloud Subscription)
+### Pro Features (Cloud Subscription)
 
-- **Real-time threat intelligence sync** — receive IP blocklists and attack signatures within minutes of detection across the network
-- **AI/ML anomaly detection** — lightweight ONNX model detects zero-day patterns
-- **Global IP reputation network** — crowdsourced threat data from all ShieldSync installations
-- **Advanced analytics dashboard** — traffic trends, attack maps, security scoring over time
-- **Multi-site management** — manage all your sites from one Pro dashboard
-- **Priority support** — dedicated support channel
+- Real-time threat intelligence synchronization
+- AI/ML anomaly detection via lightweight ONNX models
+- Global IP reputation network with crowdsourced blocks
+- Advanced analytics dashboard for traffic and attack trends
+- Single-pane multi-site management
+- Priority support channel
 
 ---
 
 ## Architecture
+
+Incoming requests are processed by the mu-plugin WAF before WordPress loads. Each request receives a risk score and is allowed, throttled, challenged, or blocked according to configured policies.
 
 ```
 Incoming HTTP Request
         │
         ▼
 ┌─────────────────────┐
-│   mu-plugin WAF     │  ← Fires before WordPress loads
+│   mu-plugin WAF     │
 │   (Hot Path)        │
 │   ThreatScorer.php  │
 └────────┬────────────┘
@@ -79,26 +79,23 @@ Incoming HTTP Request
 
 ### From WordPress.org (Recommended)
 
-1. Go to **Plugins → Add New** in your WordPress admin
+1. In WordPress admin, go to **Plugins → Add New**
 2. Search for **ShieldSync**
-3. Click **Install Now** → **Activate**
-4. Navigate to **ShieldSync → Dashboard** to configure
+3. Click **Install Now** and **Activate**
+4. Open **ShieldSync → Dashboard** to configure
 
 ### Manual Installation
 
 ```bash
-# Download the latest release
 wget https://github.com/shieldsync/plugin/releases/latest/download/shield-sync.zip
-
-# Extract to your plugins directory
 unzip shield-sync.zip -d /path/to/wp-content/plugins/
 ```
 
-Then activate via **Plugins → Installed Plugins** in WordPress admin.
+Activate the plugin under **Plugins → Installed Plugins**.
 
-### Must-Use Plugin Setup (Recommended for maximum protection)
+### Must-Use Plugin Setup (Recommended)
 
-For the earliest possible request interception, copy the WAF core to your `mu-plugins` directory:
+For the earliest possible request interception, copy the mu-plugin file into `wp-content/mu-plugins/`:
 
 ```bash
 cp wp-content/plugins/shield-sync/mu-plugin/shield-sync-core.php \
@@ -116,59 +113,52 @@ cp wp-content/plugins/shield-sync/mu-plugin/shield-sync-core.php \
 | MySQL | 5.7+ / MariaDB 10.3+ |
 | PHP Extensions | `mbstring`, `openssl`, `curl` |
 
-**Optional (for better performance):**
-- APCu extension (fast IP lookup cache)
-- Redis (distributed caching for multi-server setups)
+**Recommended for improved performance:**
+- APCu
+- Redis
 
 ---
 
 ## Tech Stack
 
-**Plugin (this repo)**
-- PHP 8.1+ — WAF engine, attack detectors, WordPress integration
+**Plugin repository**
+- PHP 8.1+ — WAF engine, detectors, WordPress integration
 - React + Vite — Admin dashboard UI
 - MySQL — Local threat logs and IP reputation tables
 
-**Central Server ([private repo](https://github.com/shieldsync/server))**
-- Laravel (PHP) — REST API for threat intelligence sync
+**Central server (private repo)**
+- Laravel — REST API for threat intelligence sync
 - PostgreSQL — Central threat database
 - Redis — High-performance caching
-- Laravel Queues — Async threat data processing
+- Laravel Queues — Asynchronous processing
 
 ---
 
 ## Configuration
 
-After activation, visit **ShieldSync → Settings** to configure:
+After activation, configure ShieldSync from the admin menu:
 
-```
-ShieldSync
-├── Dashboard          ← Live threat feed, security score
-├── Firewall Rules     ← Custom allow/block rules
-├── Attack Detectors   ← Enable/disable per attack type
-├── IP Management      ← Manual blocklist/allowlist
-├── Rate Limiting      ← Configure thresholds
-├── Logs               ← Full attack log history
-└── Settings
-    ├── General
-    ├── Notifications  ← Email alerts
-    ├── Pro License    ← Enter license key
-    └── Advanced
-```
+- Dashboard — live threat feed and security score
+- Firewall Rules — allow/block rules
+- Attack Detectors — enable or disable detection modules
+- IP Management — manual blocklist/allowlist
+- Rate Limiting — request thresholds and enforcement
+- Logs — detailed event history
+- Settings — general, notifications, Pro license, advanced options
 
 ---
 
-## Plugin Compatibility
+## Compatibility
 
-ShieldSync ships with built-in compatibility rules for:
+ShieldSync includes built-in compatibility rules for popular WordPress plugins:
 
 | Plugin | Compatibility |
 |---|---|
-| WooCommerce | ✅ Automatic allowlist for WC REST API and AJAX |
-| Elementor | ✅ Editor payloads and builder nonces whitelisted |
-| WP REST API | ✅ Configurable endpoint protection |
-| Contact Form 7 | ✅ Form submission nonces respected |
-| Yoast SEO | ✅ Sitemap requests excluded from rate limiting |
+| WooCommerce | Automatic allowlist for REST API and AJAX endpoints |
+| Elementor | Editor payloads and builder nonces whitelisted |
+| WP REST API | Configurable endpoint protection |
+| Contact Form 7 | Form submission nonces respected |
+| Yoast SEO | Sitemap requests excluded from rate limiting |
 
 ---
 
@@ -177,10 +167,7 @@ ShieldSync ships with built-in compatibility rules for:
 ### Prerequisites
 
 ```bash
-# PHP dependencies
 composer install
-
-# Dashboard UI dependencies
 cd dashboard && npm install
 ```
 
@@ -188,8 +175,8 @@ cd dashboard && npm install
 
 ```bash
 cd dashboard
-npm run dev      # Development with hot reload
-npm run build    # Production build
+npm run dev
+npm run build
 ```
 
 ### Run tests
@@ -207,10 +194,10 @@ plugin/
 ├── src/
 │   ├── Engine/             # Threat scoring engine
 │   ├── Detectors/          # Attack detection modules
-│   ├── Firewall/           # IP reputation, rate limiting
+│   ├── Firewall/           # IP reputation and rate limiting
 │   ├── Sync/               # Cloud threat feed integration
 │   ├── Cache/              # APCu/Redis/Transients abstraction
-│   ├── Database/           # Table installer and migrator
+│   ├── Database/           # Installer and migrator
 │   └── Admin/              # Dashboard and REST API
 ├── dashboard/              # React admin UI
 ├── languages/              # i18n translation files
@@ -223,25 +210,25 @@ plugin/
 
 ## Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](docs/contributing.md) before submitting a pull request.
+Contributions are welcome. Please review [docs/contributing.md](docs/contributing.md) before submitting a pull request.
 
 1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/my-new-feature`
-3. Commit your changes: `git commit -m 'feat: add some feature'`
-4. Push to the branch: `git push origin feature/my-new-feature`
-5. Open a Pull Request against `main`
+2. Create a branch: `git checkout -b feature/my-new-feature`
+3. Commit your changes
+4. Push your branch
+5. Open a pull request against `main`
 
-### Reporting Security Vulnerabilities
+### Security disclosures
 
-Please **do not** open a public GitHub issue for security vulnerabilities. Email us directly at **security@getshieldsync.com** — we aim to respond within 24 hours.
+Do not disclose security vulnerabilities in a public issue. Report them to **security@getshieldsync.com**. We aim to respond within 24 hours.
 
-See our full [Security Policy](docs/security-policy.md).
+See [docs/security-policy.md](docs/security-policy.md).
 
 ---
 
 ## Roadmap
 
-- [ ] v1.0 — Core WAF (SQLi, XSS, Brute Force, File Upload, CSRF)
+- [ ] v1.0 — Core WAF functionality
 - [ ] v1.1 — Admin dashboard with live threat feed
 - [ ] v1.2 — Cloud threat intelligence sync (Pro)
 - [ ] v1.3 — AI/ML anomaly detection (Pro)
@@ -252,7 +239,7 @@ See our full [Security Policy](docs/security-policy.md).
 
 ## License
 
-ShieldSync core is open source software licensed under the [GNU General Public License v2.0](LICENSE) — the same license as WordPress.
+ShieldSync core is licensed under the [GNU General Public License v2.0](LICENSE).
 
 The ShieldSync Pro cloud services and central server are proprietary and require a paid subscription.
 
@@ -260,12 +247,12 @@ The ShieldSync Pro cloud services and central server are proprietary and require
 
 ## Links
 
-- 🌐 Website: [getshieldsync.com](https://getshieldsync.com)
-- 📖 Documentation: [docs.getshieldsync.com](https://docs.getshieldsync.com)
-- 🐛 Bug Reports: [GitHub Issues](https://github.com/shieldsync/plugin/issues)
-- 💬 Support: [support@getshieldsync.com](mailto:support@getshieldsync.com)
-- 🔒 Security: [security@getshieldsync.com](mailto:security@getshieldsync.com)
+- Website: [getshieldsync.com](https://getshieldsync.com)
+- Documentation: [docs.getshieldsync.com](https://docs.getshieldsync.com)
+- Bug Reports: [GitHub Issues](https://github.com/shieldsync/plugin/issues)
+- Support: [support@getshieldsync.com](mailto:support@getshieldsync.com)
+- Security: [security@getshieldsync.com](mailto:security@getshieldsync.com)
 
 ---
 
-<p align="center">Built with ❤️ for the WordPress community</p>
+<p align="center">Built for the WordPress community</p>

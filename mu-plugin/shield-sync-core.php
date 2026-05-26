@@ -7,12 +7,10 @@
 add_action( 'muplugins_loaded', function() {
     global $wpdb;
 
-    // Get requesting IP
     $ip = $_SERVER['REMOTE_ADDR'] ?? '';
 
     if ( empty( $ip ) ) return;
 
-    // Check IP against blocklist
     $blocked = $wpdb->get_var( $wpdb->prepare(
         "SELECT id FROM {$wpdb->prefix}ss_ip_reputation 
          WHERE ip_address = %s 

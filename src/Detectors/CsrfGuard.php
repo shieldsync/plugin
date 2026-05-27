@@ -8,6 +8,7 @@ class CsrfGuard {
         'wp-cron.php',
         'xmlrpc.php',
         'admin-ajax.php',
+        'wp-json',
     ];
 
     public static function scan(): int {

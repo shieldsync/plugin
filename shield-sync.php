@@ -17,9 +17,12 @@ define( 'SHIELD_SYNC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SHIELD_SYNC_URL', plugin_dir_url( __FILE__ ) );
 
 require_once SHIELD_SYNC_PATH . 'src/Activator/Activator.php';
+require_once SHIELD_SYNC_PATH . 'src/Admin/RestApi.php';
+//require_once SHIELD_SYNC_PATH . 'src/Admin/Dashboard.php';
 
 register_activation_hook( __FILE__, ['ShieldSync\Activator\Activator', 'activate'] );
 
 add_action( 'plugins_loaded', function() {
-    // Engine boots here next
+    ShieldSync\Admin\RestApi::register();
+
 });

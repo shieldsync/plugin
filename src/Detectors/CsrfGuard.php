@@ -43,7 +43,6 @@ class CsrfGuard {
 
         $referer = $_SERVER['HTTP_REFERER'] ?? '';
 
-        // ✅ Fixed - removed undefined $host variable
         if ( empty( $referer ) ) {
             return 60;
         }

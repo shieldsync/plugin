@@ -1,26 +1,32 @@
 import React from 'react'
 
-const colors = {
-  'SQL Injection':    { bg: '#fff5f5', text: '#c53030' },
-  'XSS Attack':      { bg: '#fffbeb', text: '#b7791f' },
-  'Brute Force':     { bg: '#ebf8ff', text: '#2b6cb0' },
-  'CSRF Attack':     { bg: '#f0fff4', text: '#276749' },
-  'Malicious Upload':{ bg: '#faf5ff', text: '#6b46c1' },
-  'IP Blocklist':    { bg: '#fff5f5', text: '#c53030' },
+const TYPES = {
+  'SQL Injection':     { bg: '#fef2f2', color: '#dc2626', dot: '#dc2626' },
+  'XSS Attack':        { bg: '#fffbeb', color: '#b45309', dot: '#d97706' },
+  'Brute Force':       { bg: '#eff6ff', color: '#1d4ed8', dot: '#3b82f6' },
+  'CSRF Attack':       { bg: '#f0fdf4', color: '#15803d', dot: '#22c55e' },
+  'Malicious Upload':  { bg: '#faf5ff', color: '#7e22ce', dot: '#a855f7' },
+  'IP Blocklist':      { bg: '#fef2f2', color: '#dc2626', dot: '#dc2626' },
 }
 
 export default function AttackBadge({ type }) {
-  const style = colors[type] || { bg: '#f7f7f7', text: '#444' }
+  const s = TYPES[type] || { bg: '#f8fafc', color: '#475569', dot: '#94a3b8' }
 
   return (
     <span style={{
-      background: style.bg,
-      color: style.text,
-      padding: '3px 10px',
-      borderRadius: '20px',
-      fontSize: '11px',
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 5,
+      background: s.bg,
+      color: s.color,
+      padding: '3px 10px 3px 7px',
+      borderRadius: 99,
+      fontSize: 11,
       fontWeight: 600,
+      letterSpacing: '0.02em',
+      whiteSpace: 'nowrap',
     }}>
+      <span style={{ width: 6, height: 6, borderRadius: '50%', background: s.dot, flexShrink: 0 }} />
       {type}
     </span>
   )

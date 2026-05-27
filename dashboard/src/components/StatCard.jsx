@@ -1,36 +1,29 @@
 import React from 'react'
 
-export default function StatCard({ title, value, icon: Icon, color = '#3182ce' }) {
+export default function StatCard({ title, value, subtitle, accent = '#dc2626' }) {
   return (
-    <div style={{
-      background: 'white',
-      borderRadius: '12px',
-      padding: '20px 24px',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+    <div className="ss-card" style={{
+      background: '#fff',
+      borderRadius: 12,
+      padding: '24px',
+      boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+      border: '1px solid #e2e8f0',
+      borderTop: `3px solid ${accent}`,
       display: 'flex',
-      alignItems: 'center',
-      gap: '16px'
+      flexDirection: 'column',
+      gap: 6,
     }}>
-      <div style={{
-        width: 48,
-        height: 48,
-        borderRadius: '10px',
-        background: `${color}18`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0
-      }}>
-        <Icon size={22} color={color} />
+      <div style={{ fontSize: 11, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
+        {title}
       </div>
-      <div>
-        <div style={{ fontSize: 12, color: '#888', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-          {title}
-        </div>
-        <div style={{ fontSize: 28, fontWeight: 700, color: '#1a1a2e' }}>
-          {value}
-        </div>
+      <div style={{ fontSize: 36, fontWeight: 800, color: '#0f172a', lineHeight: 1, marginTop: 4 }}>
+        {value ?? '—'}
       </div>
+      {subtitle && (
+        <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>
+          {subtitle}
+        </div>
+      )}
     </div>
   )
 }

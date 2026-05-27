@@ -1,12 +1,63 @@
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
   margin: 0;
   background: transparent;
+  -webkit-font-smoothing: antialiased;
 }
 
 code {
-  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
 }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
+
+/* Table row hover */
+.ss-row:hover { background: #f8fafc !important; }
+
+/* Input focus ring */
+.ss-input:focus {
+  outline: none;
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+/* Button states */
+.ss-btn-primary:hover:not(:disabled) { background: #b91c1c !important; }
+.ss-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.ss-btn-ghost:hover { background: #f1f5f9 !important; border-color: #cbd5e1 !important; }
+.ss-btn-danger:hover { background: #fef2f2 !important; color: #dc2626 !important; border-color: #fca5a5 !important; }
+
+/* Tab active */
+.ss-tab { border-bottom: 2px solid transparent; transition: all 0.15s; }
+.ss-tab:hover { color: #0f172a !important; border-color: #cbd5e1; }
+.ss-tab.active { color: #dc2626 !important; border-color: #dc2626 !important; }
+
+/* Score ring animation */
+.ss-ring { animation: ss-ring-in 0.8s ease-out forwards; }
+@keyframes ss-ring-in {
+  from { stroke-dashoffset: 327; }
+}
+
+/* Pulse dot */
+.ss-pulse {
+  width: 8px; height: 8px;
+  background: #16a34a;
+  border-radius: 50%;
+  animation: ss-pulse 2s ease-in-out infinite;
+}
+@keyframes ss-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* Stat card hover */
+.ss-card { transition: box-shadow 0.15s; }
+.ss-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important; }
+
+/* Fade in */
+.ss-fade { animation: ss-fade 0.3s ease-out; }
+@keyframes ss-fade { from { opacity: 0; transform: translateY(4px); } }
